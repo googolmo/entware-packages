@@ -8,19 +8,19 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shadowsocks-libev
-PKG_VERSION:=2.6.1
+PKG_VERSION:=3.0.0
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/shadowsocks/shadowsocks-libev.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_RELEASE)
-PKG_SOURCE_VERSION:=a3bf80cf11e0a88589abdd87266b5351f270197c
+PKG_SOURCE_VERSION:=833594e3c637c4cad629ff95b3d3d37c31f2927b
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.xz
 PKG_MAINTAINER:=Jian Chang <aa65535@live.com>
-PKG_MIRROR_MD5SUM:=fc60936d8b990fdecd69b908bc6b770b1c1e54598da6622cc9669750c76fa2d1
 
-PKG_LICENSE:=GPLv2
+PKG_LICENSE:=GPLv3
 PKG_LICENSE_FILES:=LICENSE
+PKG_MAINTAINER:=Jian Chang <aa65535@live.com>
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(BUILD_VARIANT)/$(PKG_NAME)-$(PKG_VERSION)-$(PKG_RELEASE)
 
@@ -37,42 +37,24 @@ define Package/shadowsocks-libev/Default
 	TITLE:=Lightweight Secured Socks5 Proxy $(2)
 	URL:=https://github.com/shadowsocks/shadowsocks-libev
 	VARIANT:=$(1)
-	DEPENDS:=$(3) +libev +libsodium +libpthread +libpcre +zlib
+	DEPENDS:=$(3) +libev +libsodium +libpthread +libpcre +libmbedtls
 endef
 
 CONFIGURE_ARGS += \
 	--disable-documentation \
+	--disable-ssp \
+	--disable-assert \
+	--with-crypto-library=mbedtls
 
 Package/shadowsocks-libev = $(call Package/shadowsocks-libev/Default,openssl,(OpenSSL),+libopenssl)
-Package/shadowsocks-libev-mbedtls = $(call Package/shadowsocks-libev/Default,mbedtls,(mbed TLS),+libmbedtls)
 
 define Package/shadowsocks-libev/description
 Shadowsocks-libev is a lightweight secured socks5 proxy for embedded devices and low end boxes.
 endef
 
-Package/shadowsocks-libev-mbedtls/description = $(Package/shadowsocks-libev/description)
-
-define Package/shadowsocks-libev/conffiles
-/opt/etc/shadowsocks.json
-endef
-
-Package/shadowsocks-libev-mbedtls/conffiles = $(Package/shadowsocks-libev/conffiles)
-
-ifeq ($(BUILD_VARIANT),mbedtls)
-	CONFIGURE_ARGS += --with-crypto-library=mbedtls
-endif
-
 define Package/shadowsocks-libev/install
-	$(INSTALL_DIR) $(1)/opt/bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/ss-* $(1)/opt/bin
-	$(INSTALL_BIN) ./files/ss-rules $(1)/opt/bin
-	$(INSTALL_DIR) $(1)/opt/etc/init.d
-	$(INSTALL_BIN) ./files/S22shadowsocks $(1)/opt/etc/init.d
-	$(INSTALL_CONF) $(PKG_BUILD_DIR)/debian/config.json $(1)/opt/etc/shadowsocks.json
-	$(INSTALL_DIR) $(1)/opt/share/shadowsocks-libev
+	$(INSTALL_DIR) $(1)/opt/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/ss-{local,redir,tunnel} $(1)/opt/usr/bin
 endef
-
-Package/shadowsocks-libev-mbedtls/install = $(Package/shadowsocks-libev/install)
 
 $(eval $(call BuildPackage,shadowsocks-libev))
-$(eval $(call BuildPackage,shadowsocks-libev-mbedtls))
