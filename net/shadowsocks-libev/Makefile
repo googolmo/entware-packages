@@ -8,13 +8,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shadowsocks-libev
-PKG_VERSION:=3.0.0
+PKG_VERSION:=3.0.3
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/shadowsocks/shadowsocks-libev.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_RELEASE)
-PKG_SOURCE_VERSION:=833594e3c637c4cad629ff95b3d3d37c31f2927b
+PKG_SOURCE_VERSION:=661429e579b75a665cbfe0cd85b2533b0abdc66c
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.xz
 PKG_MAINTAINER:=Jian Chang <aa65535@live.com>
 
@@ -37,16 +37,16 @@ define Package/shadowsocks-libev/Default
 	TITLE:=Lightweight Secured Socks5 Proxy $(2)
 	URL:=https://github.com/shadowsocks/shadowsocks-libev
 	VARIANT:=$(1)
-	DEPENDS:=$(3) +libev +libsodium +libpthread +libpcre +libmbedtls
+	DEPENDS:=$(3) +libev +libudns +libsodium +libpthread +libpcre +libmbedtls
 endef
+
+Package/shadowsocks-libev = $(Package/shadowsocks-libev/Default)
 
 CONFIGURE_ARGS += \
 	--disable-documentation \
 	--disable-ssp \
 	--disable-assert \
 	--with-crypto-library=mbedtls
-
-Package/shadowsocks-libev = $(call Package/shadowsocks-libev/Default,openssl,(OpenSSL),+libopenssl)
 
 define Package/shadowsocks-libev/description
 Shadowsocks-libev is a lightweight secured socks5 proxy for embedded devices and low end boxes.
