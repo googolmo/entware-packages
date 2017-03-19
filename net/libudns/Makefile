@@ -48,17 +48,17 @@ define Build/Compile
 endef
 
 define Build/InstallDev
-	$(INSTALL_DIR) $(1)/opt/usr/include/udns
-	$(CP) $(PKG_BUILD_DIR)/udns.h $(1)/opt/usr/include/udns
-	$(CP) $(PKG_BUILD_DIR)/udns.h $(1)/opt/usr/include
+	$(INSTALL_DIR) $(1)/opt/include/udns
+	$(CP) $(PKG_BUILD_DIR)/udns.h $(1)/opt/include/udns
+	$(CP) $(PKG_BUILD_DIR)/udns.h $(1)/opt/include
 
-	$(INSTALL_DIR) $(1)/opt/usr/lib
-	$(CP) $(PKG_BUILD_DIR)/lib*.{a,so*} $(1)/opt/usr/lib
+	$(INSTALL_DIR) $(1)/opt/lib
+	$(CP) $(PKG_BUILD_DIR)/lib*.{a,so*} $(1)/opt/lib
 endef
 
 define Package/libudns/install
-	$(INSTALL_DIR) $(1)/opt/usr/lib
-	$(CP) $(PKG_BUILD_DIR)/lib*.so* $(1)/opt/usr/lib
+	$(INSTALL_DIR) $(1)/opt/lib
+	$(CP) $(PKG_BUILD_DIR)/lib*.so* $(1)/opt/lib
 endef
 
 $(eval $(call BuildPackage,libudns))

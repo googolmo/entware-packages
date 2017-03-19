@@ -55,16 +55,17 @@ CMAKE_OPTIONS += \
 	-DENABLE_PROGRAMS:Bool=OFF \
 
 define Build/InstallDev
-	$(INSTALL_DIR) $(1)/opt/usr/include
-	$(CP) $(PKG_INSTALL_DIR)/usr/include/mbedtls $(1)/opt/usr/include/
-	$(INSTALL_DIR) $(1)/opt/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib*.so* $(1)/opt/usr/lib/
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib*.a $(1)/opt/usr/lib/
+	$(INSTALL_DIR) $(1)/opt/include
+	$(CP) $(PKG_INSTALL_DIR)/opt/include/mbedtls $(1)/opt/include/
+	$(INSTALL_DIR) $(1)/opt/lib
+	$(CP) $(PKG_INSTALL_DIR)/opt/usr/lib/lib*.so* $(1)/opt/lib/
+	$(CP) $(PKG_INSTALL_DIR)/opt/usr/lib/lib*.a $(1)/opt/lib/
 endef
 
 define Package/libmbedtls/install
-	$(INSTALL_DIR) $(1)/opt/usr/lib
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib*.so* $(1)/opt/usr/lib/
+	$(INSTALL_DIR) $(1)/opt/lib
+	$(CP) $(PKG_INSTALL_DIR)/opt/lib/lib*.so* $(1)/opt/lib/
+
 endef
 
 $(eval $(call BuildPackage,libmbedtls))
