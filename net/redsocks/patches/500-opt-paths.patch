@@ -4,7 +4,7 @@
  	&dnstc_subsys,
  };
  
--static const char *confname = "/etc/redsocks.conf";
+-static const char *confname = "redsocks.conf";
 +static const char *confname = "/opt/etc/redsocks.conf";
  static const char *pidfile = NULL;
  
